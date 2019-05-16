@@ -1,0 +1,47 @@
+{{extend  './layout.html'}}
+{{block 'head'}}
+ 
+{{/block}}
+{{block  "content"}}
+ <!-- m面包屑 -->
+ <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background:#fff">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">message</li>
+    </ol>
+</nav>
+    <div class="row">
+        <div class="col">
+             
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action active">
+                 个人信息
+                </button>
+                <button type="button" class="list-group-item list-group-item-action">jacky</button>
+                <button type="button" class="list-group-item list-group-item-action">软件工程师</button>
+                <button type="button" class="list-group-item list-group-item-action">行云全球汇-高新企业-- 前端开发</button>
+                <button type="button" class="list-group-item list-group-item-action" disabled>微信号- xj135086</button>
+              </div>
+        </div>
+        <!-- 右边内容 -->
+        <!-- <div class="col-md-auto right-box">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="/images/lar.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+
+{{/block}}
+
+{{block 'js_script'}}
+<script>
+    require(['jquery', 'bootstrap','index'], function ($, strap) {
+        
+    })
+</script>
+{{/block}}

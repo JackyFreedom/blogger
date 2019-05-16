@@ -1,0 +1,12 @@
+body{
+    background: #f5f5d5;
+ 
+   
+}
+ 
+ 
+@media (max-width: 992px) { 
+  .right-box{
+      display:none;
+  }
+}

@@ -1,0 +1,164 @@
+ {{extend  './layout.html'}}
+
+ {{block 'head'}}
+
+ {{/block}}
+ {{block  "content"}}
+
+ <!-- m面包屑 -->
+ <nav aria-label="breadcrumb">
+     <ol class="breadcrumb" style="background:#f5f5d5">
+         <li class="breadcrumb-item"><a href="/">Home</a></li>
+         <li class="breadcrumb-item active" aria-current="page">detail</li>
+     </ol>
+ </nav>
+
+ <!-- 内容明细卡 -->
+ <div class="row">
+     <div class="col">
+
+         <div class="card mb-3" style="background: #f5f5d5;color: #111111;">
+             <!-- <img class="card-img-top" src="/images/lar.jpg" style="height:200px" alt="Card image cap"> -->
+             <div class="card-body">
+                 <h5 class="card-title">{{title}}</h5>
+                 <p class="card-text"> </p>
+                 <p class="card-text">
+                     <small class="text-muted">11</small>
+                     <small class="text-muted">11</small>
+                     <small class="text-muted">11</small>
+                     <small class="text-muted">11</small>
+                 </p>
+
+                 <div class="content">
+                     {{@content}}
+                 </div>
+
+             </div>
+
+
+         </div>
+         <div class="card mb-3" style="background: #f5f5d5;color: #111111;">
+             <!-- <img class="card-img-top" src="/images/lar.jpg" style="height:200px" alt="Card image cap"> -->
+             <div class="card-body">
+                 <h5 class="card-title">评论：</h5>
+                 <p class="card-text">
+                     <form action="/admin/content/comment" method="POST" id="commentForm">
+                         <input type="hidden" name="id" value="{{@_id}}">
+                         <fieldset {{if !userInfo.userName}} disabled {{/if}}>
+                             <div class="form-group">
+                                 {{if !userInfo.userName}}
+                                 <label for="disabledTextInput">注册登陆后可以发布评论</label>
+                                 {{/if}}
+                                 <div class="input-group">
+                                     <input class="form-control" name="content"
+                                         aria-label="With textarea"></input>
+                                     <button class="btn btn-primary" type="submit">提交</button>
+                                 </div>
+
+                                 <div class="alert alert-success" id="commentMessage" role="alert" style="display:none">
+
+                                 </div>
+
+                         </fieldset>
+                     </form>
+                 </p>
+
+
+                 <div class="content" style="max-height:500px;overflow:auto" id="contentMessageList">
+                   {{each comments value index  }}
+                   <div class="list-group" style="margin:5px 0px">
+                        <a class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{value.userName}}</h5>
+                                <small class="text-muted">{{value.time}}</small>
+                            </div>
+                            <p class="mb-1">{{value.content}}</p>
+                        </a>
+                    </div>
+                   {{/each}}
+                    
+
+                 </div>
+
+             </div>
+
+
+         </div>
+
+
+     </div>
+     <!-- 右边内容 -->
+     <!-- <div class="col-md-auto right-box">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="/images/lar.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                </div>
+            </div>
+        </div> -->
+
+ </div>
+
+
+ {{/block}}
+
+ {{block 'js_script'}}
+ <script>
+     require(['jquery', 'bootstrap', 'index'], function ($, strap) {
+
+         var commentForm = $('#commentForm');
+         commentForm.on('submit', function (e) {
+             e.preventDefault();
+            var contentVal = commentForm.find('[name=content]').val();
+            if(contentVal){
+             //获取参数
+             
+             var postData = {};
+             $.each(commentForm.find('input'), function (ind, itme) {
+                 var name = $(itme).attr('name');
+                 var value = $(itme).val();
+                 if (name) {
+                     postData[name] = value || '';
+                 }
+             })
+             $.ajax({
+                 url: commentForm.attr('action'),
+                 type: commentForm.attr('method'),
+                 data: postData,
+                 success: function (data) {
+                     console.log(data);
+                     if (data) {
+                         $('#commentMessage').removeClass('alert-success alert-danger');
+                         if (data.code == 0) {
+                             $('#commentMessage').addClass('alert-success');
+                         } else {
+                             $('#commentMessage').addClass('alert-danger');
+                         }
+                         $('#commentMessage').text(data.message).show();
+                         var commentHtml = '';
+                         $.each(data.comments, function (ind, val) {
+                             commentHtml += ' <div class="list-group" style="margin:5px 0px">' +
+                                 '<a   class="list-group-item list-group-item-action flex-column align-items-start">' +
+                                 '<div class="d-flex w-100 justify-content-between">' +
+                                 ' <h5 class="mb-1">'+val.userName+'</h5>' +
+                                 '  <small class="text-muted">'+val.time+'</small>' +
+                                 '   </div>' +
+                                 '   <p class="mb-1">'+val.content+'</p>' +
+                                 '   </a>' +
+                                 '  </div>';
+                         })
+
+                         $('#contentMessageList').html(commentHtml);
+                         setTimeout(function () {
+                             $('#commentMessage').hide();
+                         }, 1000)
+                     }
+
+                 }
+             })
+            }
+         })
+     })
+ </script>
+ {{/block}}

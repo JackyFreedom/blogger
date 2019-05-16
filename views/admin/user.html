@@ -1,0 +1,83 @@
+{{extend  './layout.html'}}
+{{block 'style'}}
+
+{{/block}}
+{{block  "content"}}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color:#f8f9fa">
+        <li class="breadcrumb-item"><a href="/admin">管理首頁</a></li>
+        <li class="breadcrumb-item active" aria-current="page">用户列表</li>
+    </ol>
+</nav>
+<h3>用户列表</h3>
+<div style="overflow:auto">
+<table class="table table-hover   ">
+    <!-- On rows -->
+    <tr>
+        <th>ID</th>
+        <th>用户名</th>
+        <th>密码</th>
+        <th>是否是管理员</th>
+        <th>操作</th>
+    </tr>
+    {{each list value index}}
+    <tr class="warning">
+        <td class="active">{{value._id}}</td>
+        <td>{{value.userName}}</td>
+        <td>{{value.password}}</td>
+        <td>{{value.isAdmin}}</td>
+        <td>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    删除
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/admin/users/remove?id={{@value._id}}">确定</a>
+                    <a class="dropdown-item" href="#">取消</a>
+                </div>
+            </div>
+            
+        </td>
+
+    </tr>
+    {{/each}}
+</table>
+</div>
+<!-- 分页 -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination  justify-content-center">
+
+        <li class="page-item">
+            <a class="page-link" href="/admin/user?pageIndex=1" aria-label="Previous">
+                <span aria-hidden="true"> 首页</span>
+            </a>
+        </li>
+
+        {{if pageIndex >1}}
+        <li class="page-item"><a class="page-link" href="/admin/user?pageIndex={{pageIndex-1}}">{{pageIndex-1 }}</a>
+        </li>
+        {{/if}}
+        <li class="page-item"><a class="page-link" href="/admin/user?pageIndex={{pageIndex-1+1}}">{{pageIndex-1+1}}</a>
+        </li>
+        {{if pageIndex < pageCount }}
+        <li class="page-item"><a class="page-link" href="/admin/user?pageIndex={{pageIndex-1+2}}">{{pageIndex-1+2}}</a>
+        </li>
+        {{/if}}
+        <li class="page-item">
+            <a class="page-link" href="/admin/user?pageIndex={{  pageCount }}" aria-label="Next">
+                <span aria-hidden="true">尾页 </span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{{/block}}
+
+{{block 'js_script'}}
+<script>
+    require(['jquery', 'bootstrap'], function ($, strap) {
+
+
+    })
+</script>
+{{/block}}

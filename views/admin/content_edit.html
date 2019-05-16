@@ -1,0 +1,81 @@
+{{extend  './layout.html'}}
+{{block 'style'}}
+
+{{/block}}
+{{block  "content"}}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color:#f8f9fa">
+        <li class="breadcrumb-item"><a href="/admin">管理首頁</a></li>
+        {{if name}}
+        <li class="breadcrumb-item active" aria-current="page">内容编辑</li>
+        {{else}}
+        <li class="breadcrumb-item active" aria-current="page">内容添加</li>
+        {{/if}}
+    </ol>
+</nav>
+{{if name}}
+<h3>内容编辑</h3>
+{{else}}
+<h3>内容添加</h3>
+{{/if}}
+  
+<form method="POST" {{if id}} active="/admin/content/edit" {{else}} active="/admin/content/alter"{{/if}}>
+      {{if id}}
+    <input type="hidden" name="id" value="{{@id}}">
+      {{/if}}
+    <div class="form-group">
+            <label for="exampleFormControlSelect1">分类：</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="category"  placeholder="请输入分类名称">
+                {{each categoriesList value index}}
+              <option value="{{@value._id}}"  {{if  value._id  ==  category  }} selected {{/if}} >{{value.name}} </option>
+                {{/each}}
+            </select>
+      </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">内容标题</label>
+        <input type="text" class="form-control"   name="title" value="{{title}}"    placeholder="请输入内容标题">
+    </div>
+    <div class="form-group">
+            <label for="exampleInputEmail1">内容简介</label>  
+            <textarea type="text" class="form-control"   name="description"      placeholder="请输入分类名称">{{description}} </textarea>
+        </div>
+        <div class="form-group">
+                <label for="exampleInputEmail1">内容</label>
+              <textarea name="content" id="ckEditor" cols="30"  rows="10">
+                  {{content}}
+              </textarea>
+        </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{{/block}}
+
+{{block 'js_script'}}
+<script>
+    require(['jquery', 'bootstrap','editor'], function ($, strap) {
+        // $('#editor').wysiwyg();
+
+        //初始化ckEditor
+        var ckContent = CKEDITOR.replace('ckEditor', {
+            filebrowserUploadUrl: '/admin/operation/sku/ckEditor/upload',
+            height: '400px',
+            toolbar: [
+                ['Source', '-', 'Save', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates'],
+                ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'],
+                ['Find', 'Replace', '-', 'SelectAll', '-', 'SpellChecker', 'Scayt'],
+                ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+                '/',
+                ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
+                ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl'],
+                ['Link', 'Unlink', 'Anchor'],
+                ['Image', 'multiimg', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'],
+                '/',
+                ['Styles', 'Format', 'Font', 'FontSize'],
+                ['TextColor', 'BGColor'],
+                ['Maximize', 'ShowBlocks', '-', 'About']
+            ]
+        });
+    })
+</script>
+{{/block}}

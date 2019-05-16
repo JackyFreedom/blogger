@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="keywords" content="{{keywords}}">
+    <meta name="description" content="{{description}}">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/stylesheets/common/bootstrap.css">
+    <link rel="stylesheet" href="/stylesheets/index.css">
+    {{block 'style'}} {{/block}}
+</head>
+  
+<body> 
+     <!-- node服务器地址 -->
+     <input type="hidden"  id="nodeHost" value="http://{{nodeHost.ip}}:{{nodeHost.port}}">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <a class="navbar-brand" href="/personal">
+            <img src="/images/log.jpg" style="height:50px;width:50px; border-radius: 50%;" alt="">
+
+        </a>
+        <!-- 缩小展示 -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {{each nav value index}}
+                <div class="btn-group navbar-nav " style="margin:5px">
+                       <button type="button" class="btn btn-outline-primary">  <a href="/?categoryId={{@value._id}}">{{value.name}}</a></button>
+                </div>
+                {{/each}}
+                
+         
+                <h2 style="margin:auto;  text-align: center;">博客</h2>
+             
+           {{if userInfo && userInfo.userName}}
+            <div class="btn-group navbar-nav " style="margin:5px">
+                   {{if userInfo.isAdmin}}
+                   <button type="button" class="btn btn-warning"> Welcome back administrator：    {{ userInfo.userName}}</button>
+                   {{else}}
+                   <button type="button" class="btn btn-warning"> hello：    {{ userInfo.userName}}</button>
+                   {{/if}}
+                    <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="/users/exitLogin">exit</a>
+                      <a class="dropdown-item" href="/users/exitLogin">cancel</a>
+                      {{if userInfo.isAdmin}}
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="/admin">Go into background Settings</a>
+                     {{/if}}
+
+                    </div>
+                 </div>
+           {{else}}
+                <div class="btn-group navbar-nav " style="margin:5px">
+                        <button class="btn btn-outline-info" type="submit" data-toggle="modal"  data-target="#login">login</button>
+                </div>
+              
+              <div class="btn-group navbar-nav " style="margin:5px">
+                        <button class="btn btn-outline-info" type="submit" data-toggle="modal"  data-target="#register">register</button>
+               </div>
+          
+            {{/if}}
+            
+
+            <div class="row "  >
+                    <div class="col-8" style="padding-right:0px " >
+                    <input class="form-control   " type="search" placeholder="Search" aria-label="Search">
+                      
+                    </div>
+                    <div class="col-4" style="padding-left:0px" >
+                    <button class="btn btn-outline-success col-sm-12 col-xl-12 "  type="submit">Search</button>
+                      
+                    </div>
+             </div>
+                  
+                 
+             <!-- <div class="btn-group navbar-nav " style="margin:5px">
+               </div> -->
+         
+        </div>
+    </nav>
+    {{block 'head'}}
+    {{/block}}
+    <div class="container" style="  padding: 20px;min-height: 800px">
+        {{block  'content'}}
+
+        {{/block}}
+
+    </div>
+    <div class="card text-white bg-dark  ">
+        <!-- <div class="card-header">Header</div> -->
+        <div class="card-body container">
+            <!-- <h5 class="card-title">All rights reserved by the developer</h5> -->
+            <p class="card-text " style="text-align:center">All rights of interpretation belong to the author</p>
+        </div>
+    </div>
+    {{include './template/requireConfig.html'}}
+
+    {{block 'js_script'}}
+    {{/block}}
+
+    <!-- 登陆 -->
+    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">userName:</label>
+                            <input type="text" class="form-control" name="userName">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">password:</label>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+                        <div class="alert alert-danger" name="errorMessage" style="display:none" role="alert">
+                                
+                           </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="loginSubmit">submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 注册 -->
+    <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">userName:</label>
+                            <input type="text" class="form-control" name="userName">
+                        </div>
+                        <div class="form-group"> 
+                            <label for="recipient-name" class="col-form-label">password:</label>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+                        <div class="form-group"> 
+                                <label for="recipient-name" class="col-form-label">repetition:</label>
+                                <input type="password" class="form-control" name="repetition">
+                            </div>
+                            <div class="alert alert-danger"style="display:none" name="errorMessage" role="alert">
+                            </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="registerSubmit">submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+{{extend  './layout.html'}}
+{{block 'style'}}
+
+{{/block}}
+{{block  "content"}}
+<nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color:#f8f9fa">
+            <li class="breadcrumb-item"><a href="/admin">管理首頁</a></li>
+            <li class="breadcrumb-item active" aria-current="page">提示信息</li>
+        </ol>
+    </nav>
+{{if   code ===0 }}
+    <div class="alert alert-success" role="alert">
+          {{message}}
+    </div>
+ {{else}}
+     <div class="alert alert-danger" role="alert">
+            {{message}}
+      </div>
+{{/if}}
+
+<a href="{{url}}">
+    <button type="button" class="btn btn-primary" style="margin:auto"  >返回上一步</button>
+</a>
+  
+{{/block}}
+
+{{block 'js_script'}}
+<script>
+    require(['jquery', 'bootstrap'], function ($, strap) {
+
+
+    })
+</script>
+{{/block}}

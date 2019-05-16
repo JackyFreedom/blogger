@@ -1,0 +1,40 @@
+{{extend  './layout.html'}}
+{{block 'style'}}
+
+{{/block}}
+{{block  "content"}}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color:#f8f9fa">
+        <li class="breadcrumb-item"><a href="/admin">管理首頁</a></li>
+        {{if name}}
+        <li class="breadcrumb-item active" aria-current="page">分类编辑</li>
+        {{else}}
+        <li class="breadcrumb-item active" aria-current="page">分类添加</li>
+        {{/if}}
+    </ol>
+</nav>
+{{if name}}
+<h3>分类编辑</h3>
+{{else}}
+<h3>分类添加</h3>
+{{/if}}
+
+<form method="POST" {{if name}} active="/admin/categories/edit" {{else}} active="/admin/categories/alter"{{/if}}>
+    <div class="form-group">
+        <label for="exampleInputEmail1">分类名称</label>
+        <input type="hidden" name="id" value="{{@_id}}">
+        <input type="text" class="form-control"   name="name" value="{{name}}"    placeholder="请输入分类名称">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{{/block}}
+
+{{block 'js_script'}}
+<script>
+    require(['jquery', 'bootstrap'], function ($, strap) {
+
+
+    })
+</script>
+{{/block}}
