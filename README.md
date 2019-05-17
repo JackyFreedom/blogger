@@ -12,8 +12,8 @@
 
 #### 安装教程
 
-1. npm i 
-#### test
+1. npm install 
+
 #### 使用说明
 
 1. npm start
