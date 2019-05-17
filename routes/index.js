@@ -30,7 +30,8 @@ router.get('/', function (req, res, next) {
       console.log('首页--contentList',contentList);
       res.render('index', {
         list: contentList,
-        pageIndex: pageIndex
+        pageIndex: pageIndex,
+        categoryId:categoryId
       });
 
     })
@@ -56,14 +57,20 @@ router.get('/details', function (req, res, next) {
   Content.findById(id).then(function (contentOne) {
     console.log('-------',contentOne);
     if (contentOne) {
-      res.render('details', {
-        description: contentOne.description,
-        content: contentOne.content,
-        _id: contentOne._id,
-        category: contentOne.category,
-        title: contentOne.title,
-        comments:contentOne.comments
-      });
+      contentOne.views =contentOne.views+1;
+       contentOne.save().then(function(isSave){
+         if(isSave){
+          res.render('details', {
+            description: contentOne.description,
+            content: contentOne.content,
+            _id: contentOne._id,
+            category: contentOne.category,
+            title: contentOne.title,
+            comments:contentOne.comments
+          });
+         }
+       })
+     
     } else {
       responseDate.code = 1;
       responseDate.message = '查不到此条数据'

@@ -1,7 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose')
 var router = express.Router();
-var User = require('../module/user');
+var User = require('../module/User');
 var Category = require('../module/Category');
 var Content = require('../module/Content');
 
@@ -77,7 +77,7 @@ router.get('/categories',function(req,res){
           var skip = (pageIndex-1) *pageSize;
           Category.find().limit(limit).skip(skip).then(function (allUserInfo) {
             var allUserInfo = allUserInfo || [];
-                res.render(viewPath+'Categories',{list:allUserInfo,
+                res.render(viewPath+'categories',{list:allUserInfo,
                     pageIndex:pageIndex,
                     pageSize:pageSize,
                     pageCount:pageCount,

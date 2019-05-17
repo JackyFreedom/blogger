@@ -88,23 +88,23 @@
     <ul class="pagination  justify-content-center">
 
         <li class="page-item">
-            <a class="page-link" href="/?pageIndex=1" aria-label="Previous">
+            <a class="page-link" href="/?{{if categoryId}}categoryId={{categoryId}}&{{/if}}pageIndex=1" aria-label="Previous">
                 <span aria-hidden="true"> 首页</span>
             </a>
         </li>
 
         {{if pageIndex >1}}
-        <li class="page-item"><a class="page-link" href="/?pageIndex={{pageIndex-1}}">{{pageIndex-1 }}</a>
+        <li class="page-item"><a class="page-link" href="/?{{if categoryId}}categoryId={{categoryId}}&{{/if}}pageIndex={{pageIndex-1}}">{{pageIndex-1 }}</a>
         </li>
         {{/if}}
-        <li class="page-item"><a class="page-link" href="/?pageIndex={{pageIndex-1+1}}">{{pageIndex-1+1}}</a>
+        <li class="page-item"><a class="page-link" href="/?{{if categoryId}}categoryId={{categoryId}}&{{/if}}pageIndex={{pageIndex-1+1}}">{{pageIndex-1+1}}</a>
         </li>
         {{if pageIndex < pageCount }}
-        <li class="page-item"><a class="page-link" href="/?pageIndex={{pageIndex-1+2}}">{{pageIndex-1+2}}</a>
+        <li class="page-item"><a class="page-link" href="/?{{if categoryId}}categoryId={{categoryId}}&{{/if}}pageIndex={{pageIndex-1+2}}">{{pageIndex-1+2}}</a>
         </li>
         {{/if}}
         <li class="page-item">
-            <a class="page-link" href="/?pageIndex={{  pageCount }}" aria-label="Next">
+            <a class="page-link" href="/?{{if categoryId}}categoryId={{categoryId}}&{{/if}}pageIndex={{  pageCount }}" aria-label="Next">
                 <span aria-hidden="true">尾页 </span>
             </a>
         </li>
