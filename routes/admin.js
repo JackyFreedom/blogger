@@ -134,7 +134,7 @@ router.get('/categories/alter',function(req,res){
             res.render(viewPath+'/categories_edit',{name:CategoryOne.name,_id:CategoryOne._id})
             return;
         }else{
-            responseDataSet(1,'找不到此条分类','/categories/',)
+            responseDataSet(1,'找不到此条分类','/categories/')
             res.render(viewPath+'/message',responseData)
            return;
         }

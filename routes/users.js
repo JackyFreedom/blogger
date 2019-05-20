@@ -75,7 +75,7 @@ router.post('/register', function(req, res, next) {
 
 
 router.post('/login', function(req, res, next) {
-  // console.log('login',req.body)
+   console.log('login',req.body)
   var userName = req.body.userName;
   var password = req.body.password;
   if(!userName){

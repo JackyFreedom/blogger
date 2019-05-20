@@ -1,6 +1,6 @@
 module.exports ={
      nodeservers:{
-         ip:'localhost',
-         port:'4001'
+         ip:'47.101.148.243',
+         port:'80'
      }
 }
