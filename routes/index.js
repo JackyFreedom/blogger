@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var Category = require('../module/Category');
 var Content = require('../module/Content');
-var nodeHost = require('../ipConfig').nodeservers;
 /* GET home page. */
 var responseDate
 router.use(function (erq, res, next) {
@@ -62,6 +61,7 @@ router.get('/details', function (req, res, next) {
          if(isSave){
           res.render('details', {
             description: contentOne.description,
+            keywords: contentOne.description,
             content: contentOne.content,
             _id: contentOne._id,
             category: contentOne.category,

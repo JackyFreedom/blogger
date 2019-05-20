@@ -8,11 +8,13 @@ var app = require('../app');
 var debug = require('debug')('blogger:server');
 var http = require('http');
 var mongoose = require('mongoose');
+var nodeHost = require('../ipConfig').nodeservers;
+console.log('nodehost',nodeHost.ip+nodeHost.port)
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || nodeHost.port);
 app.set('port', port);
 
 /**
