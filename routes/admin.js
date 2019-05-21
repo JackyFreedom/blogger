@@ -1,9 +1,11 @@
 var express = require('express');
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
+var multer = require('multer');
 var router = express.Router();
 var User = require('../module/User');
 var Category = require('../module/Category');
 var Content = require('../module/Content');
+var Audio = require('../module/Audio');
 
 var viewPath = 'admin/'
 
@@ -347,5 +349,50 @@ router.post('/content/comment',function(req,res){
         }
     })
     
+})
+//音频上传
+router.get('/audioAdd',function(req,res){
+    res.render(viewPath+'audioAdd');
+})
+router.post('/audioAdd',multer().single('fileValue'),function(req,res){
+     console.log('file',req.file)
+   
+    if(req.file){
+      var audio =new Audio({
+          name:req.file.originalname,
+          buffer:req.file.buffer
+      });
+      audio.save().then(function(isSave){
+          console.log('is',isSave)  
+        if(isSave){
+            responseDataSet(0,'上传成功','/audioAdd') ; 
+            res.render(viewPath+'message',responseData);
+          }else{
+            responseDataSet(1,'上传失败','/audioAdd') ; 
+            res.render(viewPath+'message',responseData);
+          }
+      })
+    }        
+})
+
+//音频列表
+router.get('/audioList',function(req,res){
+    Audio.find({},'name _id').then(function(audioAll){
+        console.log(audioAll);
+        res.render(viewPath+'audioList',{list:audioAll});
+    })
+})
+router.get('/audioList/remove',function(req,res){
+    var id = req.query.id;
+    Audio.findByIdAndRemove(id).then(function(remove){
+        console.log(remove);
+       if(remove){
+         responseDataSet(0,'删除成功','/audioList');
+         res.render(viewPath+'message',responseData);
+       }else{
+        responseDataSet(1,'删除失败','/audioList');
+        res.render(viewPath+'message',responseData);
+       }
+    })
 })
 module.exports = router;

@@ -2,10 +2,9 @@ var gulp = require('gulp');
 var browserSync = require('browser-sync') ;
 var nodemon = require('gulp-nodemon');
 var nodeHost = require('./ipConfig').nodeservers;
-console.log('nodehost',nodeHost.ip+nodeHost.port)
-  var reload = browserSync.reload;
+var reload = browserSync.reload;
 var files = [ 
-    './',
+    './*.js',
     './views/*.html',
     './views/**/*.html',
     './routes/**/*.js'

@@ -81,5 +81,39 @@ function setTimeReload(second) {
     setTimeout(function () {
         window.location.reload();
     }, second)
-}
+};
+
+
+
+ (function($){
+  //音频播放器
+            var audioPathArray =  $('.audioPaths').map(function(ind,val){
+                return  $(val).val();
+            }).toArray()
+            console.log('audioPathArray',audioPathArray);
+            var audioNext = $(".audioNext");
+            var audioSrcLen = audioPathArray.length-1; 
+            var audioIndex = 0;
+            //点下一首通过切换src来完成
+            audioNext.on('click',function(){
+                var at = $(this).attr('name');
+                if(at == '上一首'){
+                 audioIndex= audioIndex >0 ? audioIndex-1 : 0;
+                 atAudioSrc()
+                }else if(at == '下一首'){
+                    console.log(audioSrcLen,'index',audioIndex)
+                audioIndex= audioIndex < audioSrcLen ? audioIndex+1 : audioSrcLen;
+                atAudioSrc()
+                }
+                console.log('index',audioIndex)
+            })
+            function atAudioSrc( ){
+                console.log('url',audioPathArray[audioIndex])
+                $('#headAudio').attr('src','/audio?id='+audioPathArray[audioIndex])
+             
+            }
+        
+             //初始化
+            atAudioSrc()
+ }($))
 })

@@ -30,14 +30,34 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 {{each nav value index}}
+                <a href="/?categoryId={{@value._id}}">  
                 <div class="btn-group navbar-nav " style="margin:5px">
-                       <button type="button" class="btn btn-outline-primary">  <a href="/?categoryId={{@value._id}}">{{value.name}}</a></button>
+                      <button type="button" class="btn btn-outline-primary"> {{value.name}}</button>
                 </div>
+            </a>
                 {{/each}}
-                
-         
+              
                 <h2 style="margin:auto;  text-align: center;">JACKY</h2>
-             
+                <div class="btn-group navbar-nav " style="margin:5px">
+
+                        {{each audioAll value index}}
+                        <input type="hidden" name="" value="{{@value._id}}" class="audioPaths"> 
+                        {{/each}}
+                        <button class="audioNext" name="上一首">上一首</button>
+                        <audio controls autoplay loop id="headAudio">
+                        您的浏览器不支持 audio 标签。
+                        </audio>
+                        <button class="audioNext" name="下一首">下一首</button>
+                        
+                    
+                   <!-- <audio  controls preload dir>
+                        {{each audioAll value index}}
+                        <source src="/audio/?id={{@value._id}}"   >
+                      {{/each}}
+                    您的浏览器不支持 audio 标签。
+                   </audio> -->
+                </div>
+          
            {{if userInfo && userInfo.userName}}
             <div class="btn-group navbar-nav " style="margin:5px">
                    {{if userInfo.isAdmin}}

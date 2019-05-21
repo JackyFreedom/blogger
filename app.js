@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var logger = require('morgan');
 var artTemplate = require('art-template');
 var express_art_template = require('express-art-template');
@@ -10,7 +11,7 @@ var  templateMethodExtends =require('./public/javascripts/templateMethodExtends.
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
-
+var Audio = require('./module/Audio');
 //扩展art-template 方法
 templateMethodExtends(artTemplate.defaults.imports);
 
@@ -19,11 +20,12 @@ var app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
+// app.use(bodyParser.raw({ type: 'audio/wav', limit: '50mb' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 //静态资源
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/audio',audioServer);
 
 
 //指定默认的模板引擎和视图目录
@@ -52,3 +54,19 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin',adminRouter);
 module.exports = app;
+
+
+//音频服务器
+function audioServer(req,res,next){
+    if(req.path.indexOf('audio')){
+        var id =req.query.id;
+    //   console.log('audioId',id);
+      Audio.findById(id).then(function(audioOne){
+        console.log('audioOne',audioOne.buffer.length);
+          res.end(audioOne.buffer)
+      })
+    }{
+        next();
+    }
+   
+}
