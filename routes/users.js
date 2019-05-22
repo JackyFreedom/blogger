@@ -107,7 +107,8 @@ router.post('/login', function(req, res, next) {
       }else{
         responseData.message= '登陆成功';
         var cookieData = JSON.stringify({userName:userInfo.userName, _id :userInfo._id,isAdmin:userInfo.isAdmin?true:false})
-        req.cookies.set('userInfo',aes.encryptByAES(cookieData));
+        req.cookies.set('userInfo', cookieData );
+        // req.cookies.set('userInfo',aes.encryptByAES(cookieData));
         // {maxAge:3000} 过期时间
         res.send(responseData);
         return ;
