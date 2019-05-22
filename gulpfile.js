@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync') ;
 var nodemon = require('gulp-nodemon');
-var nodeHost = require('./ipConfig').nodeservers;
+var nodeHost = require('./ipConfig');
 var reload = browserSync.reload;
 var files = [ 
     './*.js',

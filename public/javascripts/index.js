@@ -6,7 +6,7 @@ define(['jquery', 'bootstrap','aes'], function ($, strap,aes) {
     // console.log('aes',aes.unEncryptByAES(aes.encryptByAES('aaaaaaa')))
     
     var nodeHost = $('#nodeHost').val() || '';
-    // console.log('node--', nodeHost)
+    console.log('node--', nodeHost)
     //注册
     var $register = $('#register');
     $register.find('#registerSubmit').on('click', function () {
