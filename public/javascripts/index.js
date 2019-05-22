@@ -3,7 +3,7 @@ define(['jquery', 'bootstrap','aes'], function ($, strap,aes) {
         interval: 2000
     })
     // console.log('--'+aes.encryptByAES('aaaaaaa')+'--')
-    // console.log('aes',aes.unEncryptByAES(aes.encryptByAES('aaaaaaa')))
+    console.log('aes',aes.unEncryptByAES('s7s/ST9h/nbhB5EP4kSC3g=='))
     
     var nodeHost = $('#nodeHost').val() || '';
     console.log('node--', nodeHost)

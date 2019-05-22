@@ -23,7 +23,7 @@ define(['aesFn'], function () {
          * @param keyEncrypt:加密时用到的密钥
          * @return 返回解密后的内容
          **/
-        unEncryptByAES: function (strEncrypt) {
+        unEncryptByAES: function (strEncrypt, keyEncrypt) {
             let aesUnEncrypt = CryptoJS.AES.decrypt(strEncrypt, aesSecretUtf8,
                 {
                     iv: iv,
