@@ -3,9 +3,11 @@ require.config({
     paths:{
         'jquery':'common/jquery',
         'bootstrap':'common/bootstrap',
+        'aes':'common/aesencrypt',
+        'aesFn':'common/aes-min',
         'popper':'common/popper',
         'editor':'lib/ckeditor/ckeditor',
-        'index':'index'
+        'index':'index',
     },
     shim: {
            'jquery': {
@@ -15,5 +17,6 @@ require.config({
     　　　　　　　　deps: ['jquery','popper'],
                   exports: '$'
 　　　　　　         },
+             
      }
 })

@@ -12,6 +12,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var Audio = require('./module/Audio');
+var aes = require('./serverCommonFn/aes');
 //扩展art-template 方法
 templateMethodExtends(artTemplate.defaults.imports);
 
@@ -40,7 +41,7 @@ app.use(function (req,res,next) {
 
     if(req.cookies.get('userInfo')){
         try{ 
-            res.locals.userInfo = JSON.parse(req.cookies.get('userInfo'));
+            res.locals.userInfo = JSON.parse(aes.unEncryptByAES(req.cookies.get('userInfo')));
 
         }catch(e){
             console.log('设置cookie出错 ：'+e);
@@ -62,8 +63,8 @@ function audioServer(req,res,next){
         var id =req.query.id;
     //   console.log('audioId',id);
       Audio.findById(id).then(function(audioOne){
-        console.log('audioOne',audioOne.buffer.length);
-          res.end(audioOne.buffer)
+          res.set('Content-Type','audio/mp3')
+          res.send(audioOne.buffer)
       })
     }{
         next();

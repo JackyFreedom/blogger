@@ -6,7 +6,8 @@ var User = require('../module/User');
 var Category = require('../module/Category');
 var Content = require('../module/Content');
 var Audio = require('../module/Audio');
-
+var fs = require('fs');
+var path = require('path');
 var viewPath = 'admin/'
 
 var responseData;
@@ -70,7 +71,7 @@ router.get('/categories',function(req,res){
 
    
     //读取所有的用户展示出来
-    Category.count().then(function(countLen){
+    Category.countDocuments().then(function(countLen){
         console.log('分类----',countLen)
           //获取总页数
           var pageCount=  Math.ceil(countLen/pageSize);  
@@ -354,16 +355,21 @@ router.post('/content/comment',function(req,res){
 router.get('/audioAdd',function(req,res){
     res.render(viewPath+'audioAdd');
 })
-router.post('/audioAdd',multer().single('fileValue'),function(req,res){
-     console.log('file',req.file)
-   
+router.post('/audioAdd',multer({dest:'../public/audios/'}).single('fileValue'),function(req,res){
+    //  console.log('file',req.file)
+     var aupath = '../public/audios/';
     if(req.file){
+        var jonspath = path.join(__dirname,aupath)
+        // console.log('jonspath',jonspath)  jonspath+req.file.originalname
+       fs.writeFile(jonspath+req.file.originalname,req.file.buffer,function(err){
+           console.log(jonspath+req.file.originalname,'errr------',err)
+       })
       var audio =new Audio({
           name:req.file.originalname,
           buffer:req.file.buffer
       });
       audio.save().then(function(isSave){
-          console.log('is',isSave)  
+        //   console.log('is',isSave)  
         if(isSave){
             responseDataSet(0,'上传成功','/audioAdd') ; 
             res.render(viewPath+'message',responseData);

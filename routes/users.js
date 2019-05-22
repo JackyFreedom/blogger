@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../module/User');
-/* GET users listing. */
+var aes = require('../serverCommonFn/aes');
 //初始化一个管理员用户
 User.findOne({userName:'admin'}).then(function(isAdmin){
   if(!isAdmin){
@@ -22,8 +22,8 @@ router.use(function(req,res,next) {
 router.post('/register', function(req, res, next) {
   //  console.log(req.body)
     var userName = req.body.userName;
-    var password = req.body.password;
-    var repetition = req.body.repetition;
+    var password =aes.unEncryptByAES(req.body.password||'') ;
+    var repetition =aes.unEncryptByAES(req.body.repetition||'')  ;
     if(!userName){
        responseData.code = 1;
        responseData.message='用户名不能为空';
@@ -77,7 +77,7 @@ router.post('/register', function(req, res, next) {
 router.post('/login', function(req, res, next) {
    console.log('login',req.body)
   var userName = req.body.userName;
-  var password = req.body.password;
+  var password =aes.unEncryptByAES(req.body.password || '') ;
   if(!userName){
      responseData.code = 1;
      responseData.message='用户名不能为空';
@@ -107,7 +107,7 @@ router.post('/login', function(req, res, next) {
       }else{
         responseData.message= '登陆成功';
         var cookieData = JSON.stringify({userName:userInfo.userName, _id :userInfo._id,isAdmin:userInfo.isAdmin?true:false})
-        req.cookies.set('userInfo',cookieData);
+        req.cookies.set('userInfo',aes.encryptByAES(cookieData));
         // {maxAge:3000} 过期时间
         res.send(responseData);
         return ;
