@@ -13,11 +13,18 @@ var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var Audio = require('./module/Audio');
 var aes = require('./serverCommonFn/aes');
+ console.log('aes-----',aes.unEncryptByAES('s7s/ST9h/nbhB5EP4kSC3g=='))
 //扩展art-template 方法
 templateMethodExtends(artTemplate.defaults.imports);
 
  
 var app = express();
+
+//app.all('*',function(req,res,next){
+
+ //res.header('Access-Control-Allow-Origin', '*');
+  //       next();
+ // })
 
 app.use(logger('dev'));
 app.use(express.json());
