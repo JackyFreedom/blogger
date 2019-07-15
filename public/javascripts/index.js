@@ -1,4 +1,4 @@
-define(['jquery', 'bootstrap','aes'], function ($, strap,aes) {
+define(['jquery', 'bootstrap','aes','colpick'], function ($, strap,aes) {
     $('.carousel').carousel({
         interval: 2000
     })
@@ -118,35 +118,42 @@ define(['jquery', 'bootstrap','aes'], function ($, strap,aes) {
         //初始化
         atAudioSrc()
     }($));
-    (function ($) {
-        //雪花效果
-        var minSize = 5;
-        var maxSize = 50;
-        var newOn = 100;//产生雪花的速度
-        var flakeColor = "#fff";
-        var flake = $("<div></div>").css({ "position": "absolute", "top": "-50px" }).html("❄");
-        $(function () {
-            var documentWidth = $(document).width();
-            var documentHeight = $(document).height();
+ 
 
-            setInterval(function () {
-                var startPositionLeft = Math.random() * documentWidth;
-                var startOpacity = 0.7 + Math.random() * 0.3;
-                var endPositionTop = documentHeight;
-                var endPostionLeft = Math.random() * documentWidth;
-                var durationFall = 2000 + Math.random() * 3000;
-                var sizeFlake = minSize + Math.random() * maxSize;
-                flake.clone().appendTo("body").css({
-                    "left": startPositionLeft,
-                    "opacity": startOpacity,
-                    "font-size": sizeFlake,
-                    "color": flakeColor
-                }).animate({
-                    "top": endPositionTop,
-                    "left": endPostionLeft,
-                    "opacity": 0.5
-                }, durationFall, function () { $(this).remove(); });
-            }, newOn);
-        });
-    }($))
+
+    // (function ($) {
+    //     //雪花效果
+    //     var minSize = 5;
+    //     var maxSize = 50;
+    //     var newOn = 100;//产生雪花的速度
+    //     var flakeColor = "#fff";
+    //     var flake = $("<div></div>").css({ "position": "absolute", "top": "-50px" }).html("❄");
+    //     $(function () {
+    //         var documentWidth = $(document).width();
+    //         var documentHeight = $(document).height();
+
+    //         setInterval(function () {
+    //             var startPositionLeft = Math.random() * documentWidth;
+    //             var startOpacity = 0.7 + Math.random() * 0.3;
+    //             var endPositionTop = documentHeight;
+    //             var endPostionLeft = Math.random() * documentWidth;
+    //             var durationFall = 2000 + Math.random() * 3000;
+    //             var sizeFlake = minSize + Math.random() * maxSize;
+    //             flake.clone().appendTo("body").css({
+    //                 "left": startPositionLeft,
+    //                 "opacity": startOpacity,
+    //                 "font-size": sizeFlake,
+    //                 "color": flakeColor
+    //             }).animate({
+    //                 "top": endPositionTop,
+    //                 "left": endPostionLeft,
+    //                 "opacity": 0.5
+    //             }, durationFall, function () { $(this).remove(); });
+    //         }, newOn);
+    //     });
+    // }($))
+    $('#picker').colpick({   onSubmit:function(e,color){
+        $('body').css('background','#'+color)
+        console.log(arguments)
+    }})
 })

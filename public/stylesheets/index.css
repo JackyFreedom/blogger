@@ -1,6 +1,10 @@
-body{
-    background: #f5f5d5;
- 
+html{
+}
+
+html body{
+   background: #fff;
+   width: 100%;
+   
    
 }
  
@@ -10,3 +14,8 @@ body{
       display:none;
   }
 }
+/*
+colpick Color Picker / colpick.com
+*/
+
+/*Main container*/

@@ -9,107 +9,135 @@
     <meta name="description" content="{{description}}">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/stylesheets/common/bootstrap.css">
+    <link rel="stylesheet" href="/stylesheets/common/colpick.css">
     <link rel="stylesheet" href="/stylesheets/index.css">
+    <script>
+    //  document.style.fontSize
+    </script>
     {{block 'style'}} {{/block}}
+    {{include './template/requireConfig.html'}}
 </head>
-  
-<body> 
-     <!-- node服务器地址 -->
-     <input type="hidden"  id="nodeHost" value="http://{{nodeHost.ip}}:{{nodeHost.port}}">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<body>
+
+    <!-- node服务器地址 -->
+    <input type="hidden" id="nodeHost" value="http://{{nodeHost.ip}}:{{nodeHost.port}}">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style=" box-shadow: 9px -2px 11px #ddd;">
 
         <a class="navbar-brand" href="/personal">
             <img src="/images/log.jpg" style="height:50px;width:50px; border-radius: 50%;" alt="">
 
         </a>
-        <!-- 缩小展示 -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
+     
+       
+           <!-- 缩小展示 -->
+           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+       </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                {{each nav value index}}
-                <a href="/?categoryId={{@value._id}}">  
-                <div class="btn-group navbar-nav " style="margin:5px">
-                      <button type="button" class="btn btn-outline-primary"> {{value.name}}</button>
-                </div>
-            </a>
-                {{/each}}
-              
-                <h2 style="margin:auto;  text-align: center;">JACKY</h2>
-                <div class="btn-group navbar-nav " style="margin:5px">
-
-                        {{each audioAll value index}}
-                        <input type="hidden" name="" value="{{@value._id}}" class="audioPaths"> 
-                        {{/each}}
-                        <button class="audioNext" name="上一首">上一首</button>
-                        <audio controls autoplay loop  id="headAudio">
-                        您的浏览器不支持 audio 标签。
-                        </audio>
-                        <button class="audioNext" name="下一首">下一首</button>
-                        
-                    
-                   <!-- <audio  controls preload dir>
-                        {{each audioAll value index}}
-                        <source src="/audio/?id={{@value._id}}"   >
-                      {{/each}}
-                    您的浏览器不支持 audio 标签。
-                   </audio> -->
-                </div>
-          
-           {{if userInfo && userInfo.userName}}
+               
+                <ul class="navbar-nav mr-auto">
+                        <!-- <li class="nav-item active">
+                              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#">Link</a>
+                            </li> -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                前端技术站
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {{each nav value index}}
+                                <a class="dropdown-item" href="/?categoryId={{@value._id}}">
+                                    {{value.name}}
+                                </a>
+                                {{/each}}
+                                <!-- <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a> -->
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    游戏
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    {{each gameList value index}}
+                                    <a class="dropdown-item" href="/game/{{value}}">
+                                        {{value}}
+                                    </a>
+                                    {{/each}}
+                                   
+                                </div>
+                            </li>
+                    </ul>
+            <h2 style="margin:auto;  text-align: center;">JACKY</h2>
             <div class="btn-group navbar-nav " style="margin:5px">
-                   {{if userInfo.isAdmin}}
-                   <button type="button" class="btn btn-warning"> Welcome back administrator：    {{ userInfo.userName}}</button>
-                   {{else}}
-                   <button type="button" class="btn btn-warning"> hello：    {{ userInfo.userName}}</button>
-                   {{/if}}
-                    <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="/users/exitLogin">exit</a>
-                      <a class="dropdown-item" href="/users/exitLogin">cancel</a>
-                      {{if userInfo.isAdmin}}
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="/admin">Go into background Settings</a>
-                     {{/if}}
-
-                    </div>
-                 </div>
-           {{else}}
-                <div class="btn-group navbar-nav " style="margin:5px">
-                        <button class="btn btn-outline-info" type="submit" data-toggle="modal"  data-target="#login">login</button>
+                    <button class="btn btn-outline-info"  
+                    id="picker" >color</button>
                 </div>
-              
-              <div class="btn-group navbar-nav " style="margin:5px">
-                        <button class="btn btn-outline-info" type="submit" data-toggle="modal"  data-target="#register">register</button>
-               </div>
-          
-            {{/if}}
-            
+            {{if userInfo && userInfo.userName}}
+            <div class="btn-group navbar-nav " style="margin:5px">
+                {{if userInfo.isAdmin}}
+                <button type="button" class="btn btn-warning"> Welcome back administrator：
+                    {{ userInfo.userName}}</button>
+                {{else}}
+                <button type="button" class="btn btn-warning"> hello： {{ userInfo.userName}}</button>
+                {{/if}}
+                <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/users/exitLogin">exit</a>
+                    <a class="dropdown-item" href="/users/exitLogin">cancel</a>
+                    {{if userInfo.isAdmin}}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/admin">Go into background Settings</a>
+                    {{/if}}
 
-            <div class="row "  >
-                    <div class="col-8" style="padding-right:0px " >
+                </div>
+            </div>
+            {{else}}
+          
+            <div class="btn-group navbar-nav " style="margin:5px">
+                <button class="btn btn-outline-info" type="submit" data-toggle="modal"
+                    data-target="#login">login</button>
+            </div>
+
+            <div class="btn-group navbar-nav " style="margin:5px">
+                <button class="btn btn-outline-info" type="submit" data-toggle="modal"
+                    data-target="#register">register</button>
+            </div>
+
+            {{/if}}
+
+
+            <div class="row ">
+                <div class="col-8" style="padding-right:0px ">
                     <input class="form-control   " type="search" placeholder="Search" aria-label="Search">
-                      
-                    </div>
-                    <div class="col-4" style="padding-left:0px" >
-                    <button class="btn btn-outline-success col-sm-12 col-xl-12 "  type="submit">Search</button>
-                      
-                    </div>
-             </div>
-                  
-                 
-             <!-- <div class="btn-group navbar-nav " style="margin:5px">
+
+                </div>
+                <div class="col-4" style="padding-left:0px">
+                    <button class="btn btn-outline-success col-sm-12 col-xl-12 " type="submit">Search</button>
+
+                </div>
+            </div>
+
+
+            <!-- <div class="btn-group navbar-nav " style="margin:5px">
                </div> -->
-         
+
         </div>
     </nav>
     {{block 'head'}}
     {{/block}}
-    <div class="container" style="  padding: 20px;min-height: 800px">
+    <div class="container" style="height: 100% ; padding-top: 10px;">
         {{block  'content'}}
 
         {{/block}}
@@ -122,7 +150,7 @@
             <p class="card-text " style="text-align:center">All rights of interpretation belong to the author</p>
         </div>
     </div>
-    {{include './template/requireConfig.html'}}
+
 
     {{block 'js_script'}}
     {{/block}}
@@ -149,8 +177,8 @@
                             <input type="password" class="form-control" name="password">
                         </div>
                         <div class="alert alert-danger" name="errorMessage" style="display:none" role="alert">
-                                
-                           </div>
+
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -177,16 +205,16 @@
                             <label for="recipient-name" class="col-form-label">userName:</label>
                             <input type="text" class="form-control" name="userName">
                         </div>
-                        <div class="form-group"> 
+                        <div class="form-group">
                             <label for="recipient-name" class="col-form-label">password:</label>
                             <input type="password" class="form-control" name="password">
                         </div>
-                        <div class="form-group"> 
-                                <label for="recipient-name" class="col-form-label">repetition:</label>
-                                <input type="password" class="form-control" name="repetition">
-                            </div>
-                            <div class="alert alert-danger"style="display:none" name="errorMessage" role="alert">
-                            </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">repetition:</label>
+                            <input type="password" class="form-control" name="repetition">
+                        </div>
+                        <div class="alert alert-danger" style="display:none" name="errorMessage" role="alert">
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -197,7 +225,7 @@
         </div>
     </div>
 
-    
+
 </body>
 
 </html>

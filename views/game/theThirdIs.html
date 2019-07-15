@@ -1,0 +1,205 @@
+{{extend  '../layout.html'}}
+
+{{block 'head'}}
+<style>
+    #canvas {
+        width: 11rem;
+        height: 11rem;
+        background: #fdfdfd;
+        margin: auto;
+        box-sizing: border-box;
+
+    }
+
+    #canvas .box-item {
+        line-height: 55px;
+        text-align: center;
+        font-size: 30px;
+        width: 33%;
+        height: 33%;
+        float: left;
+        border-top: 3px solid #000;
+        border-left: 3px solid #000;
+    }
+
+    #canvas .box-item:nth-child(3),
+    #canvas .box-item:nth-child(6),
+    #canvas .box-item:nth-child(9) {
+        border-right: 3px solid #000;
+    }
+
+    #canvas .box-item:nth-child(7),
+    #canvas .box-item:nth-child(8),
+    #canvas .box-item:nth-child(9) {
+        border-bottom: 3px solid #000;
+    }
+</style>
+{{/block}}
+{{block  "content"}}
+
+<!-- m面包屑 -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background:#f5f5d5">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">娱乐</li>
+    </ol>
+</nav>
+
+<!-- 内容明细卡 -->
+<div class="row">
+    <div class="col">
+
+        <div class="card mb-3" style="background: #f5f5d5;color: #111111;">
+            <!-- <img class="card-img-top" src="/images/lar.jpg" style="height:200px" alt="Card image cap"> -->
+            <div class="card-body">
+                <h5 class="card-title" style="text-align:center">对角棋{{title}}</h5>
+                <p class="card-text"> </p>
+                <p class="card-text">
+                    <small class="text-muted">作者：admin{{user}}</small>
+                    <small class="text-muted"> </small>
+                    <small class="text-muted">时间：2019.7.13{{time}}</small>
+                </p>
+
+                <div class="content">
+                    <div class="alert alert-danger" role="alert" id="errMsg" style="display:none;text-align: center">
+                       
+                    </div>
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">请棋手<span id="chessPlayerName"></span>下棋:</h4>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div id="canvas">
+                                        <div class="box-item" index="1"></div>
+                                        <div class="box-item" index="2"></div>
+                                        <div class="box-item" index="3"></div>
+                                        <div class="box-item" index="4"></div>
+                                        <div class="box-item" index="5"></div>
+                                        <div class="box-item" index="6"></div>
+                                        <div class="box-item" index="7"></div>
+                                        <div class="box-item" index="8"></div>
+                                        <div class="box-item" index="9"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <button type="button" class="btn btn-outline-danger" id="reset">重新开始</button>
+                                    <div id="canvas-list" style="height:200px;overflow:auto;display: none">
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- 评论 -->
+        {{include '../template/footer.html'}}
+
+    </div>
+
+</div>
+
+{{/block}}
+
+{{block 'js_script'}}
+
+theThirdIs
+<script>
+    require(['jquery', 'bootstrap', 'index'], function ($, strap) {
+
+        //  对角其
+        var chessPlayer;
+        var chessPlayerName;
+        var history = [];
+
+        function chessPlayerFN() {
+            chessPlayer = !chessPlayer;
+            chessPlayerName = chessPlayer ? 'X' : 'O';
+            $("#chessPlayerName").text(chessPlayerName);
+        }
+        chessPlayerFN()
+        function historyFn() {
+            var arr = [];
+            var html = '';
+            $('.box-item').each(function (ind, val) {
+                var text = $(val).text().trim();
+                if (text) {
+                    arr.push(text);
+                } else {
+                    arr.push('');
+                }
+            })
+            history.push(arr);
+            history.forEach(function (val, ind) {
+                html+='<button type="button" class="btn btn-warning historyClick" style="margin-top:1px">第' + (ind + 1) + '步</button> </br>';
+                // html += '<button class="historyClick">第' + (ind + 1) + '步</button>'
+            })
+            $('#canvas-list').html(html);
+        }
+        function successFn(atArray) {
+            var sucArray = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+            ];
+
+            for (var i = 0; i < sucArray.length; i++) {
+                var a = sucArray[i][0];
+                var b = sucArray[i][1];
+                var c = sucArray[i][2];
+                if (atArray[a] && atArray[a] == atArray[b] && atArray[a] == atArray[c]) {
+                    $('.box-item').off();
+                    $('#errMsg').text('棋手'+atArray[a] + '胜利  请点击重新开始').show();
+                    return false;
+                }
+            }
+        }
+        $('#reset').on('click',function(){
+            //重新开始
+              
+            chessPlayer=false;
+            history=[];
+            $('.box-item').off().text('');
+            $('#errMsg').hide()
+            init() 
+
+        })
+        $('body').on('click', '.historyClick', function () {
+          // 后退功能
+        })
+        function init() {
+            $('.box-item').on('click', function () {
+                if ($(this).text().trim()) {
+                    return false;
+                }
+
+                $(this).text(chessPlayerName);
+                var atArray = $('.box-item').map(function (ind, val) {
+                    return $(val).text().trim() || '';
+                })
+
+                historyFn()
+                chessPlayerFN();
+
+                successFn(atArray)
+
+            })
+        }
+
+        init()
+
+    })
+</script>
+{{/block}}

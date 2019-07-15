@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var fs = require('fs');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
@@ -13,7 +14,6 @@ var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var Audio = require('./module/Audio');
 var aes = require('./serverCommonFn/aes');
- console.log('aes-----',aes.unEncryptByAES('s7s/ST9h/nbhB5EP4kSC3g=='))
 //扩展art-template 方法
 templateMethodExtends(artTemplate.defaults.imports);
 
@@ -57,11 +57,16 @@ app.use(function (req,res,next) {
     }
     next();
 })
+
 //node 服务器地址
+app.use(getAgmeFileList(path.join(__dirname,'/views/game')))
+
 app.locals.nodeHost =nodeHost;
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users', usersRouter); 
 app.use('/admin',adminRouter);
+app.use(resAgmeFileList(path.join(__dirname,'/views/game')))
+
 module.exports = app;
 
 
@@ -78,4 +83,33 @@ function audioServer(req,res,next){
         next();
     }
    
+}
+//获取游戏文件列表
+function getAgmeFileList(dirname){
+    return function(req,res,next){
+        var list = fs.readdirSync(dirname);
+        console.log('name',list);
+        res.locals.gameList =list.map((item)=>{
+            return item.substr(0,item.indexOf('.')) ;
+        })
+      
+      next();
+    }
+}
+
+//f返回游戏文件列表
+function resAgmeFileList(dirname){
+    return function(req,res,next){
+        if(req.path.indexOf('/game')!==-1){
+           let filename  =  req.path.substr(1);
+            if(filename){
+                res.render(filename)
+            }else{
+                throw Error('not is defined game file'+ filename);
+            }
+            console.log(dirname);
+        }else{
+            next();
+        }
+    }
 }
