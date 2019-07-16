@@ -115,6 +115,8 @@ theThirdIs
     require(['jquery', 'bootstrap', 'index'], function ($, strap) {
 
         //  对角其
+        var count = 0;
+        var ischeck=false;
         var chessPlayer;
         var chessPlayerName;
         var history = [];
@@ -167,18 +169,134 @@ theThirdIs
             }
         }
         $('#reset').on('click',function(){
+            count=0
             //重新开始
-              
-            chessPlayer=false;
+            chessPlayer=false;   
+            chessPlayerFN()
             history=[];
             $('.box-item').off().text('');
             $('#errMsg').hide()
             init() 
-
+            smart() 
         })
         $('body').on('click', '.historyClick', function () {
           // 后退功能
         })
+        function smart(){
+            ischeck=true;
+             var atarr = $('.box-item').map(function(ind,val){
+                 return $(val).text().trim() || '';
+             })
+             count++;
+
+             console.log(count,'count')
+            //  atarr.each(function(ind,val){
+                 //第一步
+                  
+                 var sucArray = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+            ];
+
+            for (var i = 0; i < sucArray.length; i++) {
+                var a = sucArray[i][0];
+                var b = sucArray[i][1];
+                var c = sucArray[i][2];
+                if (atarr[a] == 'X'&&atarr[b] == 'X'&&atarr[c]=='') {
+                    $('.box-item')[c].click();
+                    return false;
+                }else if (atarr[a] == 'X'&&atarr[c] == 'X'&&atarr[c]=='') {
+                    $('.box-item')[b].click();
+                    return false;
+                }else if (atarr[b] == 'X'&&atarr[c] == 'X'&&atarr[c]=='') {
+                    $('.box-item')[a].click();
+                    return false;
+                }
+            }
+                 if(count === 1 && !atarr[4]){
+                    $('.box-item')[4].click();
+
+                 } else   if(count === 2){
+                    if( !atarr[0]){
+                        $('.box-item')[0].click();
+                    }else  if( !atarr[2]){
+                        $('.box-item')[2].click();
+                    }else if( !atarr[6]){
+                        $('.box-item')[6].click();
+                    }else if( !atarr[8]){
+                        $('.box-item')[8].click();
+                    }
+                 }else if(count === 3  ){
+                     console.log(atarr)
+                     if( atarr[0]=='x'&&!atarr[2]){
+                        $('.box-item')[2].click();
+                    }else  if(  atarr[0]=='x'&&!atarr[6]){
+                        $('.box-item')[6].click();
+                    }else  if(  atarr[2]=='x'&&!atarr[0]){
+                        $('.box-item')[0].click();
+                    }else if(  atarr[2]=='x'&&!atarr[8]){
+                        $('.box-item')[8].click();
+                    } else if(  atarr[6]=='x'&&!atarr[0]){
+                        $('.box-item')[0].click();
+                    }else if(  atarr[6]=='x'&&!atarr[8]){
+                        $('.box-item')[0].click();
+                    }else if(  atarr[8]=='x'&&!atarr[2]){
+                        $('.box-item')[2].click();
+                    }else if(  atarr[8]=='x'&&!atarr[6]){
+                        $('.box-item')[6].click();
+                    }else{
+                        for(var i = 0 ; i<atarr.length;i++){
+                           if(!atarr[i]){
+                               $('.box-item')[i].click();
+                               break;
+                           }
+                        }
+                    }
+                    
+                 }else if(count === 4 ){  
+                        if( atarr[0]=='x'&& atarr[2]=='x'&&!atarr[1]){
+                        $('.box-item')[1].click();
+                    }else  if(  atarr[2]=='x'&&atarr[8]=='x'&&!atarr[5]){
+                        $('.box-item')[5].click();
+                    }else if(  atarr[0]=='x'&&atarr[6]=='x'&&!atarr[3]){
+                        $('.box-item')[3].click();
+                    }else if(  atarr[6]=='x'&&atarr[8]=='x'&&!atarr[7]){
+                        $('.box-item')[7].click();
+                    } else{
+                        for(var i = 0 ; i<atarr.length;i++){
+                           if(!atarr[i]){
+                               $('.box-item')[i].click();
+                               return false;
+                           }
+                        }
+                    }
+                 }else  if(count === 5 ){
+                        for(var i = 0 ; i<atarr.length;i++){
+                           if(!atarr[i]){
+                               $('.box-item')[i].click();
+                               return false;
+                             
+                           }
+                        }
+                 }else if(count === 6 ){
+                        for(var i = 0 ; i<atarr.length;i++){
+                           if(!atarr[i]){
+                               $('.box-item')[i].click();
+                               return false;
+                                
+                           }
+                        }
+                 };
+
+
+            //  })
+        }
         function init() {
             $('.box-item').on('click', function () {
                 if ($(this).text().trim()) {
@@ -194,12 +312,15 @@ theThirdIs
                 chessPlayerFN();
 
                 successFn(atArray)
-
+                if(ischeck){
+                    ischeck=false;
+                    return false;
+                }
+                smart()
             })
         }
-
-        init()
-
+        init() 
+        smart()
     })
 </script>
 {{/block}}
