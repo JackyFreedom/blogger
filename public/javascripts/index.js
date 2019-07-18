@@ -2,6 +2,8 @@ define(['jquery', 'bootstrap','aes','colpick'], function ($, strap,aes) {
     $('.carousel').carousel({
         interval: 2000
     })
+    var backgroundColor = localStorage.getItem('backgroundColor');
+    $('body').css({'background':backgroundColor});
     // console.log('--'+aes.encryptByAES('aaaaaaa')+'--')
     console.log('aes',aes.unEncryptByAES('s7s/ST9h/nbhB5EP4kSC3g=='))
     
@@ -154,6 +156,6 @@ define(['jquery', 'bootstrap','aes','colpick'], function ($, strap,aes) {
     // }($))
     $('#picker').colpick({   onSubmit:function(e,color){
         $('body').css('background','#'+color)
-        console.log(arguments)
+         localStorage.setItem('backgroundColor','#'+color)
     }})
 })
