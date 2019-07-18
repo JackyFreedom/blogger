@@ -68,8 +68,9 @@
         <div class="card mb-3" style="background: #f5f5d5;color: #111111;">
                
                         <div id="content">
-                <div class="alert alert-success" id="room" role="alert"> </div>
+                           <p>基于对网络聊天工具的心曲 ，所以通过socketIO创建了自己的聊天工具，第一版只满足了简单的群聊功能后续会继续优化</p>
 
+                <div class="alert alert-success" id="room" role="alert"> </div>
                                 <div class="container">
                                         <div class="row">
                                           <div class="col-sm-2">
@@ -146,7 +147,7 @@ Chat.prototype.sendMessage= function(room,text){
         room:room,
         text:text
     }
-    console.log('前端message',message)
+    // console.log('前端message',message)
     
     this.socket.emit('message',message);
 }
@@ -173,7 +174,6 @@ Chat.prototype.processcommand=function(command){
     switch(command){
         case 'join':
         words.shift();
-        console.log(words)
         var room = words.join(' ');
         this.changeRoom(room); //处理房间变换/创建
         break;
@@ -243,7 +243,7 @@ $(document).ready(function(){
         $('#messages').append(divSystemComtentElement('更换房间了'));
     })
     socket.on('userList',function(message){
-        console.log('index',message)
+        // console.log('index',message)
         var html = '';
         if(message.users&&message.users.length>0){
         $.each(message.users,function(ind,val){
@@ -253,13 +253,13 @@ $(document).ready(function(){
        }
     })
     socket.on('message',function(message){  //显示接收到的消息
-        console.log('mesg',message.users)
+        // console.log('mesg',message.users)
         var newElemen = $('<div></div>').text(message.text);
         $('#messages').append(newElemen);
      
     });
     socket.on('rooms',function(rooms){  //显示可用的房间列表
-        console.log('----房间',rooms)
+        // console.log('----房间',rooms)
         $('#room-list').empty();
         for(var room in rooms){
             if(room != ''){

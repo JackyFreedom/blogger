@@ -21,7 +21,7 @@ exports.listen =function(server){
         handleRoomJoining(socket);
 
         socket.on('rooms',function(){               //用户发出请求时 ， 向其提供已占用的聊天室的列表
-            console.log('占用',io.sockets.adapter.rooms)
+            // console.log('占用',io.sockets.adapter.rooms)
             socket.emit('rooms',io.sockets.adapter.rooms);
         });
 
@@ -44,7 +44,7 @@ function assignGuestName(socket,guestNumber,nickNames,namesUsed){
 
 //进入聊天室相关的逻辑
 function joinRoom(socket, room){
-    console.log('----',room)
+    // console.log('----',room)
     socket.join(room);       //让用户进入房间
     var usersInRoom = io.sockets.adapter.rooms[room];  //确定有哪些用户在房间
     currentRoom[socket.id] = room;    
@@ -79,7 +79,7 @@ function handleNameChangeAttempts(socket,nickNames,namesUsed){
             });
         }else{
             if(namesUsed.indexOf(name) == -1){  
-                console.log('id',socket.id)         //如果称昵还没有注册就注册上
+                // console.log('id',socket.id)         //如果称昵还没有注册就注册上
                 var previousName = nickNames[socket.id];
                 var previousNameIndex = namesUsed.indexOf(previousName);
                 namesUsed.push(name);
@@ -107,7 +107,7 @@ function handleNameChangeAttempts(socket,nickNames,namesUsed){
 //发送聊天消息 
 function handleMessageBroadcasting(socket){
     socket.on('message',function(message){
-        console.log('监听消息发送',message)
+        // console.log('监听消息发送',message)
 
         socket.broadcast.to(message.room).emit('message',{
             text:nickNames[socket.id] + ':'+message.text
@@ -119,8 +119,8 @@ function handleMessageBroadcasting(socket){
 
 function handleRoomJoining(socket){
     socket.on('join',function(room){
-        console.log(currentRoom[socket.id],'创建房间',room)
-        console.log('currentRoom',currentRoom[socket.id])
+        // console.log(currentRoom[socket.id],'创建房间',room)
+        // console.log('currentRoom',currentRoom[socket.id])
         socket.leave(currentRoom[socket.id]); //离开房间 
         joinRoom(socket,room.newRoom);
     })
