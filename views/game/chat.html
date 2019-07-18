@@ -1,0 +1,294 @@
+{{extend  '../layout.html'}}
+
+{{block 'head'}}
+<style>
+#content{
+    padding: 20px;
+}
+#room{
+    margin-bottom: 1em;
+    padding: 5px;
+
+}
+
+#messages{
+    width:100%;
+    height: 300px;
+    overflow: auto;
+    margin-bottom: 1em;
+    margin-right: 10px;
+    padding: 5p 10px;
+}
+.list-group-item{
+    background: none;
+    border: none;
+    
+}
+#room-list{
+    max-height: 200px;
+    overflow: auto;
+}
+
+#room-list li{
+    border-bottom: 1px solid #eee;
+    padding: 5px;
+
+} 
+.alert-success{
+    color: #f7f7f7;
+    background-color: #0f1010;
+    border-color: #ddd;
+}
+#room-list li:hover{
+    background-color: #d4edda;
+    cursor: pointer;
+}
+
+
+#help{
+    font:10px 'Lucida Grande',Helvetica ,Arial,sans-serif;
+    
+}
+</style>
+{{/block}}
+{{block  "content"}}
+
+<!-- m面包屑 -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background:#f5f5d5">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">娱乐</li>
+    </ol>
+</nav>
+
+<!-- 内容明细卡 -->
+<div class="row">
+    <div class="col">
+
+        <div class="card mb-3" style="background: #f5f5d5;color: #111111;">
+               
+                        <div id="content">
+                <div class="alert alert-success" id="room" role="alert"> </div>
+
+                                <div class="container">
+                                        <div class="row">
+                                          <div class="col-sm-2">
+                                                <div class="card " style="width:100%;">
+                                                        <div class="card-header">
+                                                          所有的房间可点击进行更换
+                                                        </div>
+                                                        <ul class="list-group list-group-flush"  id="room-list">
+                                                        </ul>
+                                                      </div>
+                                          </div>
+                                          <div class="col-sm-8" >
+                                    <div class="alert alert-success" id="messages" role="alert"> </div>
+                                             
+                                          </div>
+                                          <div class="col-sm-2">
+                                                <div class="card " style="width:100%;">
+                                                        <div class="card-header">
+                                                          当前房间人员
+                                                        </div>
+                                                        <ul class="list-group list-group-flush" id="userList">
+                                                        
+                                                         
+                                                        </ul>
+                                                      </div>
+                                          </div>
+                                        </div>
+                                      </div>  
+                             
+                                      <form id="send-form">
+                                      <div class="input-group mb-3">
+                                            <input type="text" class="form-control" id="send-message" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            <div class="input-group-append">
+                                              <button class="btn btn-outline-secondary"  type="submit">提交</button>
+                                            </div>
+                                          </div>
+                                
+                                      
+                                      <div id="help">
+                                          chat commands:
+                                          <ul>
+                                              <li>创建房间命令格式 : <code> /nick [username] </code>></li>
+                                              <li>修改名称命令格式 : <code> /join [room name] </code>></li>
+                                          </ul>
+                                      </div>
+                                  </form>
+                               
+                            </div>  
+                    
+        </div>
+        <!-- 评论 -->
+        {{include '../template/footer.html'}}
+
+    </div>
+
+</div>
+
+{{/block}}
+
+{{block 'js_script'}}
+
+theThirdIs
+ 
+<script>
+    require(['jquery', 'bootstrap','socket', 'index'], function ($, strap,io) {
+        $(function(){
+            var Chat = function(socket){
+     this.socket = socket;
+}
+// console.log('init')
+//发送消息的函数
+Chat.prototype.sendMessage= function(room,text){
+    var message ={
+        room:room,
+        text:text
+    }
+    console.log('前端message',message)
+    
+    this.socket.emit('message',message);
+}
+
+//变更房间的函数
+Chat.prototype.changeRoom = function(room){
+    this.socket.emit('join',{
+        newRoom:room
+    })
+}
+
+
+//处理聊天命令的函数 
+
+Chat.prototype.processcommand=function(command){
+
+    var words = command.split(' ');
+      command = words[0]
+                     .substring(1,words[0].length)
+                     .toLowerCase();   //从第一个单词开始解析命令
+    var message = false;
+    // console.log('message',command)
+
+    switch(command){
+        case 'join':
+        words.shift();
+        console.log(words)
+        var room = words.join(' ');
+        this.changeRoom(room); //处理房间变换/创建
+        break;
+        case 'nick':
+        words.shift();
+        var name= words.join(' ');
+        this.socket.emit('nameAttempt',name); //处理更民尝试
+        break;
+
+        default:
+        message = '无法识别的命令.';  //如果命令无非识别返回错误消息
+        break;
+    }
+    return  message;
+}
+
+//* web 程序中有两种文本数据 。一种是受信的 由程序创建的 一种是不受信的 不受信的文本是由用户输入的
+// 我们认为用户输入的文本数据可疑是以为恶意用户会蓄意在提交文本中放<script>标签 放入javascript逻辑
+//如果不经修改就把这些数据展示给其他用户可能会发生令人厌恶的事情 ，比如将用户 转移到其他web页面 
+//这个劫持web程序的方法称作跨域脚本（xss)攻击
+
+function divEscapedContentElement(message){
+  return $('<li class="list-group-item" style="padding:5px" ></li>').text(message);
+}
+
+function divSystemComtentElement(message){
+  return $('<div></div>').html('<p>'+message+'</p>');
+}
+
+//处理原始用户输入
+function processUserInput(chatApp,socket){
+    var message= $('#send-message').val();
+    var systemMessage;
+    if(message.charAt(0) == '/'){
+    // console.log('start path',chatApp)
+
+        systemMessage = chatApp.processcommand(message);
+        if(systemMessage){
+            $('#messages').append(divSystemComtentElement(systemMessage));
+        }
+    }else{
+        chatApp.sendMessage($('#room').text(),message); //将非命令输入广播给其他用户 
+        $('#messages').append(divEscapedContentElement(message));
+        $('#messages').scrollTop($('#messages').prop('scrollHeight'));
+    }
+    $('#send-message').val('');
+}
+
+//程序端初始化逻辑
+var socket = io.connect();
+$(document).ready(function(){
+    var chatApp = new Chat(socket);
+
+    socket.on('nameResult',function(result){ //显示更名尝试的结果
+       
+        var message ;
+        if(result.success){
+            message = '你现在被称为' + result.name+ '.';
+        }else{
+            message = result.message;
+        }
+        $('#messages').append(divSystemComtentElement(message));
+    })
+
+    socket.on('joinResult',function(result){ //显示房间变更结果
+        $('#room').text(result.room);
+        $('#messages').append(divSystemComtentElement('更换房间了'));
+    })
+    socket.on('userList',function(message){
+        console.log('index',message)
+        var html = '';
+        if(message.users&&message.users.length>0){
+        $.each(message.users,function(ind,val){
+            html +='  <li class="list-group-item" style="padding:5px" >'+val+'</li>';
+        })
+        $('#userList').html(html);
+       }
+    })
+    socket.on('message',function(message){  //显示接收到的消息
+        console.log('mesg',message.users)
+        var newElemen = $('<div></div>').text(message.text);
+        $('#messages').append(newElemen);
+     
+    });
+    socket.on('rooms',function(rooms){  //显示可用的房间列表
+        console.log('----房间',rooms)
+        $('#room-list').empty();
+        for(var room in rooms){
+            if(room != ''){
+                $('#room-list').append(divEscapedContentElement(room));
+            }
+        }
+        
+        $('#room-list li').click(function(){ //点击房间名可以换到那个房间中
+            chatApp.processcommand('/join '+ $(this).text());
+            $('#send-message').focus();
+        })
+    })
+    setInterval(function(){   //定期请求可用的房间列表
+        socket.emit('rooms');
+    },1000);
+
+    $('#send-message').focus();
+
+    $('#send-form').submit(function(){ //提交表单可以发送聊天消息
+    //   console.log('init socket',chatApp)
+
+        processUserInput(chatApp, socket);
+        return false;
+    })
+})
+
+
+        })
+       
+    })
+</script>
+{{/block}}

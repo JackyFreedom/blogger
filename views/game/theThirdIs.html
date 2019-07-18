@@ -33,6 +33,26 @@
     #canvas .box-item:nth-child(9) {
         border-bottom: 3px solid #000;
     }
+
+
+
+    body{
+    padding: 50px;
+    font: 14px 'Lucida Grande',Helvetica,Arial, sans-serif;
+}
+
+a{
+    color:#00B7FF;
+}
+#content{
+    width: 800px;
+    margin-left:auto;
+    margin-right: auto;
+    padding: 5px;
+
+
+}
+ 
 </style>
 {{/block}}
 {{block  "content"}}
@@ -59,8 +79,11 @@
                     <small class="text-muted"> </small>
                     <small class="text-muted">时间：2019.7.13{{time}}</small>
                 </p>
-
+                
                 <div class="content">
+                        <div class="alert alert-danger" role="alert" id="commonShowMsg" style="display:none;text-align: center">
+                       
+                            </div>
                     <div class="alert alert-danger" role="alert" id="errMsg" style="display:none;text-align: center">
                        
                     </div>
@@ -99,6 +122,8 @@
 
             </div>
         </div>
+
+     
         <!-- 评论 -->
         {{include '../template/footer.html'}}
 
@@ -111,9 +136,10 @@
 {{block 'js_script'}}
 
 theThirdIs
+ 
 <script>
     require(['jquery', 'bootstrap', 'index'], function ($, strap) {
-
+       
         //  对角其
         var count = 0;
         var ischeck=false;
@@ -316,7 +342,10 @@ theThirdIs
                     ischeck=false;
                     return false;
                 }
-                smart()
+                setTimeout(function(){
+                
+                   smart();
+                },500)
             })
         }
         init() 

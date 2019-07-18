@@ -9,10 +9,13 @@ var debug = require('debug')('blogger:server');
 var http = require('http');
 var mongoose = require('mongoose');
 var nodeHost = require('../ipConfig');
+ 
+var socket = require('../sokets');
+
 /**
  * Get port from environment and store in Express.
  */
-
+ 
 var port = normalizePort(process.env.PORT || nodeHost.nodePort);
 app.set('port', port);
 
@@ -21,6 +24,10 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+socket.listen(server);
+// io.set('log level', 1);//将socket.io中的debug信息关闭  
+ 
+
 
 /**
  * Listen on provided port, on all network interfaces.

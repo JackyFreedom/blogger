@@ -7,6 +7,7 @@ require.config({
         'aesFn': 'common/aes-min',
         'popper': 'common/popper',
         'colpick': 'common/colpick',
+        'socket': 'common/socket',
         'editor': 'lib/ckeditor/ckeditor',
         'index': 'index',
     },
