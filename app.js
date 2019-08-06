@@ -26,7 +26,7 @@ var app = express();
   //       next();
  // })
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(express.json());
 // app.use(bodyParser.raw({ type: 'audio/wav', limit: '50mb' }));
 app.use(express.urlencoded({ extended: false }));
@@ -88,7 +88,7 @@ function audioServer(req,res,next){
 function getAgmeFileList(dirname){
     return function(req,res,next){
         var list = fs.readdirSync(dirname);
-        console.log('name',list);
+        // console.log('name',list);
         res.locals.gameList =list.map((item)=>{
             return item.substr(0,item.indexOf('.')) ;
         })

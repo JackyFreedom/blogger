@@ -7,11 +7,15 @@ var currentRoom = {};
 exports.listen =function(server){
     
     io = socketio.listen(server);
+    
     io.set('log level',1);
     io.on('connect',function(socket){
+        console.log('rooms',io.sockets.adapter.rooms)
         console.log('正在连接')
     })
     io.sockets.on('connection',function(socket){ // 定义每个用户连接的处理逻辑
+    console.log('rooms',io.sockets.adapter.rooms)
+
         guestNumber = assignGuestName(socket,guestNumber,nickNames, namesUsed); //用户在连接时赋予其一个访问 名
         joinRoom(socket,'Lobby');
         handleMessageBroadcasting(socket,nickNames); //处理用户的消息更名 以及聊天室的创建和变更
@@ -21,7 +25,7 @@ exports.listen =function(server){
         handleRoomJoining(socket);
 
         socket.on('rooms',function(){               //用户发出请求时 ， 向其提供已占用的聊天室的列表
-            // console.log('占用',io.sockets.adapter.rooms)
+            console.log('占用',io.sockets.adapter.rooms)
             socket.emit('rooms',io.sockets.adapter.rooms);
         });
 
@@ -44,9 +48,11 @@ function assignGuestName(socket,guestNumber,nickNames,namesUsed){
 
 //进入聊天室相关的逻辑
 function joinRoom(socket, room){
-    // console.log('----',room)
+    console.log('----',room) 
+   
     socket.join(room);       //让用户进入房间
     var usersInRoom = io.sockets.adapter.rooms[room];  //确定有哪些用户在房间
+    console.log('usersinroom', io.sockets.adapter.rooms)
     currentRoom[socket.id] = room;    
     socket.emit('joinResult',{room:room});  //让用户知道他们进入新了房间
     socket.broadcast.to(room).emit('message',{
