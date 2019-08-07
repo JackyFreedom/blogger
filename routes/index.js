@@ -37,7 +37,8 @@ router.get('/', function (req, res, next) {
           list: contentList,
           pageIndex: pageIndex,
           categoryId: categoryId,
-          audioAll: audioAll
+          audioAll: audioAll,
+          pageCount:contentList.length,
         });
 
       })
@@ -50,7 +51,9 @@ router.get('/', function (req, res, next) {
           res.render('index', {
             list: contentList,
             pageIndex: pageIndex,
-            audioAll: audioAll
+            audioAll: audioAll,
+          pageCount:contentList.length,
+
           });
 
         })

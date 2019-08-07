@@ -218,7 +218,7 @@ router.get('/content',function(req,res){
       Content.find({} ).limit(limit).skip(skip).populate('category').then(function(list){
           console.log(list)
          if(list){
-             res.render(viewPath+'/content',{list:list, pageIndex:pageIndex,})
+             res.render(viewPath+'/content',{list:list, pageIndex:pageIndex,pageCount:list.length})
          }
       })   
  })
@@ -270,6 +270,29 @@ router.post('/content/edit',function(req,res){
         res.render('admin/message',responseData);
     }
 })
+//糙数据
+function addtest(){
+    var category = '5d294aa71f8200075c1243c2';
+    var title = 'req.body.title';
+    var description = 'req.body.description';
+    var user = '5d4a307a9230c62154ab68ea';
+    //用户
+    var body ={
+        category,
+        title,
+        description,
+        user,
+    } 
+    console.log(body);
+         var content = new Content(body);
+         content.save().then(function(contentSave){
+              if(contentSave){
+                  console.log('保存成功')
+              }else{
+                  console.log('保存失败')
+              }
+         })
+}
 
 //内容修改
 router.get('/content/alter',function(req,res){
