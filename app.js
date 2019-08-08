@@ -27,6 +27,8 @@ var app = express();
  // })
 
 // app.use(logger('dev'));
+var accessLog = fs.createWriteStream('./access.log', {flags : 'a'});  
+app.use(logger('combined', {stream : accessLog}));      //打印到log日志  
 app.use(express.json());
 // app.use(bodyParser.raw({ type: 'audio/wav', limit: '50mb' }));
 app.use(express.urlencoded({ extended: false }));
