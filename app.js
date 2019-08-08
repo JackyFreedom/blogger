@@ -26,9 +26,7 @@ var app = express();
   //       next();
  // })
 
-// app.use(logger('dev'));
-var accessLog = fs.createWriteStream('./access.log', {flags : 'a'});  
-app.use(logger('combined', {stream : accessLog}));      //打印到log日志  
+ 
 app.use(express.json());
 // app.use(bodyParser.raw({ type: 'audio/wav', limit: '50mb' }));
 app.use(express.urlencoded({ extended: false }));
@@ -59,14 +57,16 @@ app.use(function (req,res,next) {
     }
     next();
 })
+var accessLog = fs.createWriteStream('./access.log', {flags : 'a'}); 
+var adminLog = fs.createWriteStream('./admin.log', {flags : 'a'}); 
 
 //node 服务器地址
 app.use(getAgmeFileList(path.join(__dirname,'/views/game')))
 
 app.locals.nodeHost =nodeHost;
-app.use('/', indexRouter);
+app.use('/',logger('combined', {stream : accessLog}), indexRouter);
 app.use('/users', usersRouter); 
-app.use('/admin',adminRouter);
+app.use('/admin',logger('combined', {stream : adminLog}),adminRouter);
 app.use(resAgmeFileList(path.join(__dirname,'/views/game')))
 
 module.exports = app;
