@@ -47,6 +47,7 @@ app.use(function (req,res,next) {
     res.locals.userInfo = {};
 
     if(req.cookies.get('userInfo')){
+        
         try{ 
             // res.locals.userInfo = JSON.parse(aes.unEncryptByAES(req.cookies.get('userInfo')));
             res.locals.userInfo = JSON.parse( req.cookies.get('userInfo') );
@@ -57,6 +58,7 @@ app.use(function (req,res,next) {
     }
     next();
 })
+
 var accessLog = fs.createWriteStream('./access.log', {flags : 'a'}); 
 var adminLog = fs.createWriteStream('./admin.log', {flags : 'a'}); 
 
