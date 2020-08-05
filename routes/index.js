@@ -28,7 +28,7 @@ router.get('/', function (req, res, next) {
     console.log('AudioAll', audioAll)
     if (categoryId) {
       // console.log('首页--categoryId',categoryId)
-      Content.find({ 'category': categoryId }, ['dateTime', 'views', 'description', 'title', 'user']).populate('User').then(function (contentList) {
+      Content.find({ 'category': categoryId }, ['dateTime', 'views', 'description', 'title', 'user','imgPath']).populate('User').then(function (contentList) {
         var len = contentList.length;
         var limit = pageSize;
         var skip = (pageIndex - 1) * limit;

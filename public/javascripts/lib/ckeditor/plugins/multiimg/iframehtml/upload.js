@@ -148,7 +148,7 @@
             },
             dnd: '#dndArea',
             paste: '#uploader',
-            swf: '/common/javascripts/lib/ckeditor/plugins/multiimg/iframehtml/Uploader.swf',
+            swf: '/common/public/javascripts/lib/ckeditor/plugins/multiimg/iframehtml/Uploader.swf',
             chunked: false,
             chunkSize: 512 * 1024,
             server: '/admin/operation/ckEditor/batchUpload',

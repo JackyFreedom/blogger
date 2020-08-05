@@ -1,6 +1,7 @@
  {{extend  './layout.html'}}
  <!-- 轮播图 -->
  {{block 'head'}}
+ 
  <!-- <div id="carouselExampleIndicators" class="carousel slide container-fluid" data-ride="carousel"style="margin-bottom:10px">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -30,61 +31,35 @@
  {{/block}}
  {{block  "content"}}
 
-       
     <!-- m面包屑 -->
-    <nav aria-label="breadcrumb" >
+    <!-- <nav aria-label="breadcrumb" >
         <ol class="breadcrumb"  style="background:#f5f5d5">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">List</li>
         </ol>
     </nav>
-          
+           -->
              
      <!-- 内容明细卡 -->
-     <div class="row">
-         <div class="col">
-             {{each list value index}}
-             <div class="card mb-3"  style="background: #f5f5d5;">
-                 <a href="/details?id={{@value._id}}">
-                     <!-- <img class="card-img-top" src="/images/lar.jpg" style="height:200px" alt="Card image cap"> -->
-                     <div class="card-body">
-                         <h5 class="card-title">{{value.title}}</h5>
-                         <p class="card-text" style="color:#6c757d ">{{value.description}} </p>
-                         <div class="container">
-                                <div class="row"  >
-                                  <div class="col-sm" style="padding:0px">
-                                        <small class="text-muted"   > 作者：{{value.title}} </small>  
-                                  </div>
-                                  <div class="col-sm"  style="padding:0px">
-                                        <small class="text-muted"  > 阅读量：{{value.views}} </small> 
-                                  </div>
-                                  <div class="col-sm" style="padding:0px">
-                                        <small class="text-muted"   > 创建时间：{{value.dateTime | format }} </small>
-                                </div>
-                                </div>
-                              </div>
-                         
-                        
-                     </div>
-                 </a>
-             </div>
-           {{/each}}
-             
-         </div>
-         <!-- 右边内容 -->
-         <!-- <div class="col-md-auto right-box">
-             <div class="card" style="width: 18rem;">
-                 <img class="card-img-top" src="/images/lar.jpg" alt="Card image cap">
-                 <div class="card-body">
-                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                         card's content.</p>
-                 </div>
-             </div>
-         </div> -->
-
-     </div>
-     <!-- 分页 -->
-<nav aria-label="Page navigation example">
+     {{each list value index}}
+     <div class="card mb-3 shadow-sm p-3 mb-5 bg-white rounded" style="border:unset">
+        <a href="/details?id={{@value._id}}">
+        <img src="/public/images/update/{{value.imgPath}}" class="card-img" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{value.title}}</h5>
+          <p class="card-text">{{value.description}} </p>
+          <p class="card-text">
+              <small class="text-muted mr-5">难度：3星</small>
+              <small class="text-muted mr-5">阅读量：{{value.views}}</small>
+              <small class="text-muted mr-5">创建时间：{{value.dateTime | format }}</small>
+            </p>
+        </div>
+        </a>
+      </div>
+   {{/each}}
+    
+   
+<!-- <nav aria-label="Page navigation example">
     <ul class="pagination  justify-content-center">
         <li class="page-item">
             <a class="page-link" href="/?{{if categoryId}}categoryId={{categoryId}}&{{/if}}pageIndex=1" aria-label="Previous">
@@ -108,14 +83,25 @@
             </a>
         </li>
     </ul>
-</nav>
+</nav> -->
 
  {{/block}}
 
  {{block 'js_script'}}
  <script>
-     require(['jquery', 'bootstrap','index'], function ($, strap) {
-         
+     require(['jquery', 'bootstrap','index','mePlayer'], function ($, strap) {
+        mePlayer({
+    theme: '可选，不指定时为默认主题，值为"mini"时为迷你版主题',
+    music : {
+        src   : '音乐文件地址',
+        title : '歌名',
+        author: '歌手名',
+        cover : '封面路径',
+        lrc   : '歌词字符串：[00:24.600]温柔的晚风\n[00:27.830]轻轻吹过 爱人的梦中\n ...'
+    },
+    target: '放置播放器的DOM容器，如: .music',
+    autoplay: false // 是否自动播放
+});
      })
  </script>
  {{/block}}

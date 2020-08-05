@@ -1,5 +1,5 @@
 require.config({
-    baseUrl: '/javascripts',
+    baseUrl: '/public/javascripts',
     paths: {
         'jquery': 'common/jquery',
         'bootstrap': 'common/bootstrap',
@@ -10,6 +10,7 @@ require.config({
         'socket': 'common/socket',
         'editor': 'lib/ckeditor/ckeditor',
         'index': 'index',
+        
     },
     shim: {
         'jquery': {

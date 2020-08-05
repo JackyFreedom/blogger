@@ -248,16 +248,13 @@ router.get('/content/edit',function(req,res){
 })
 //内容内容  -- 保存
 router.post('/content/edit',function(req,res){
-    var category = req.body.category;
-    var title = req.body.title;
-    var description = req.body.description;
-    var category = req.body.category;
+     let { category,title,description, imgPath} = req.body
 
     //用户
     req.body.user = res.locals.userInfo._id;
     
     console.log('body',req.body);
-    if(category&&title&&description&&category){
+    if(category&&title&&description&&imgPath){
          var content = new Content(req.body);
          content.save().then(function(contentSave){
              if(contentSave){

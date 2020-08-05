@@ -31,6 +31,11 @@
                 {{/each}}
             </select>
       </div>
+      
+            <div class="form-group">
+              <label for="fileupload">标题图片</label>
+              <input type="file" class="form-control-file" id="fileupload" name="imgPath">
+            </div>
     <div class="form-group">
         <label for="exampleInputEmail1">内容标题</label>
         <input type="text" class="form-control"   name="title" value="{{title}}"    placeholder="请输入内容标题">
@@ -55,7 +60,26 @@
 <script>
     require(['jquery', 'bootstrap','editor'], function ($, strap) {
         // $('#editor').wysiwyg();
-
+        $("#fileupload").on("change",function(){
+  var file = this.files[0];
+    var data = new FormData();
+        data.append("file", file);
+        $.ajax({
+            type: "post",
+            url: "/update/img",
+            data: data,
+            contentType: false,
+            //默认文件类型application/x-www-form-urlencoded  设置之后multipart/form-data
+            processData: false,
+            // 默认情况下会对发送的数据转化为对象 不需要转化的信息
+            success: function (res) {
+                alert('上传成功')
+                console.log('res',res)
+                $("#fileupload").value = res.path
+            },
+        });
+})
+     
         //初始化ckEditor
         var ckContent = CKEDITOR.replace('ckEditor', {
             filebrowserUploadUrl: '/admin/operation/sku/ckEditor/upload',

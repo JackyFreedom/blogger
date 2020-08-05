@@ -8,9 +8,9 @@
     <meta name="keywords" content="{{keywords}}">
     <meta name="description" content="{{description}}">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="/stylesheets/common/bootstrap.css">
-    <link rel="stylesheet" href="/stylesheets/common/colpick.css">
-    <link rel="stylesheet" href="/stylesheets/index.css">
+    <link rel="stylesheet" href="/public/stylesheets/common/bootstrap.css">
+    <link rel="stylesheet" href="/public/stylesheets/common/colpick.css">
+    <link rel="stylesheet" href="/public/stylesheets/index.css">
     <script>
     //  document.style.fontSize
     </script>
@@ -18,14 +18,14 @@
     {{include './template/requireConfig.html'}}
 </head>
 
-<body>
+<body style="background: rgb(254, 254, 254);">
 
     <!-- node服务器地址 -->
     <input type="hidden" id="nodeHost" value="http://{{nodeHost.ip}}:{{nodeHost.port}}">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style=" box-shadow: 9px -2px 11px #ddd;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 bg-white rounded"  >
 
         <a class="navbar-brand" href="/personal">
-            <img src="/images/log.jpg" style="height:50px;width:50px; border-radius: 50%;" alt="">
+            <img src="/public/images/log.jpg" style="height:50px;width:50px; border-radius: 50%;" alt="">
 
         </a>
      
@@ -38,13 +38,21 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                
                 <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">最新</a>
+                      </li>
+                    {{each nav value index}}
+                    <li class="nav-item">
+                        <a class="nav-link"  href="/?categoryId={{@value._id}}">  {{value.name}}</a>
+                        </li>
+                    {{/each}}
                         <!-- <li class="nav-item active">
                               <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item">
                               <a class="nav-link" href="#">Link</a>
                             </li> -->
-                        <li class="nav-item dropdown">
+                        <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 前端技术站
@@ -55,33 +63,19 @@
                                     {{value.name}}
                                 </a>
                                 {{/each}}
-                                <!-- <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Action</a>
                                 <a class="dropdown-item" href="#">Another action</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Something else here</a> -->
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    游戏
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    {{each gameList value index}}
-                                    <a class="dropdown-item" href="/game/{{value}}">
-                                        {{value}}
-                                    </a>
-                                    {{/each}}
-                                   
-                                </div>
-                            </li>
+                            <!-- </div>
+                        </li>   -->
                     </ul>
-            <h2 style="margin:auto;  text-align: center;">JACKY</h2>
-            <div class="btn-group navbar-nav " style="margin:5px">
+            <!-- <h2 style="margin:auto;  text-align: center;">JACKY</h2> -->
+            <!-- <div class="btn-group navbar-nav " style="margin:5px">
                     <button class="btn btn-outline-info"  
                     id="picker" >color</button>
-                </div>
-            {{if userInfo && userInfo.userName}}
+                </div> -->
+            <!-- {{if userInfo && userInfo.userName}}
             <div class="btn-group navbar-nav " style="margin:5px">
                 {{if userInfo.isAdmin}}
                 <button type="button" class="btn btn-warning"> Welcome back administrator：
@@ -115,10 +109,38 @@
                     data-target="#register">register</button>
             </div>
 
-            {{/if}}
-
-
+            {{/if}} -->
+           
+            <div  >
+                <ul class="navbar-nav mr-auto">
+                    {{if userInfo && userInfo.userName}}
+                    <li class="nav-item">
+                        <span class="nav-link">
+                            {{if userInfo.isAdmin}} 
+                            你好: {{ userInfo.userName}} 
+                            <a  class="nav-link" style="display: unset;" href="/admin">后台</a>
+                            {{else}}
+                             欢迎回来：{{ userInfo.userName}}
+                             {{/if}}
+                             <a  class="nav-link" style="display: unset;" href="/users/exitLogin">退出登录</a>
+                        </span>
+                       
+                         
+                      </li>
+                      {{else}}
+                      <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal"
+                        data-target="#login" >登录</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal"
+                        data-target="#register"  >注册</a>
+                      </li>
+                      {{/if}}
+                    </ul>
+            </div>
             <div class="row ">
+                
                 <div class="col-8" style="padding-right:0px ">
                     <input class="form-control   " type="search" placeholder="Search" aria-label="Search">
 
@@ -129,7 +151,7 @@
                 </div>
             </div>
 
-
+          
             <!-- <div class="btn-group navbar-nav " style="margin:5px">
                </div> -->
 
@@ -137,19 +159,19 @@
     </nav>
     {{block 'head'}}
     {{/block}}
-    <div class="container" style="height: 100% ; padding-top: 10px;">
+    <div class="container" >
         {{block  'content'}}
 
         {{/block}}
 
     </div>
-    <div class="card text-white bg-dark  " style="border-radius:0px">
-        <!-- <div class="card-header">Header</div> -->
+    <!-- <div class="card text-white bg-dark  " style="border-radius:0px">
+        <div class="card-header">Header</div>
         <div class="card-body container">
-            <!-- <h5 class="card-title">All rights reserved by the developer</h5> -->
+            <h5 class="card-title">All rights reserved by the developer</h5>
             <p class="card-text " style="text-align:center">All rights of interpretation belong to the author</p>
         </div>
-    </div>
+    </div> -->
 
 
     {{block 'js_script'}}
@@ -169,11 +191,11 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">userName:</label>
+                            <label for="recipient-name" class="col-form-label">用户名:</label>
                             <input type="text" class="form-control" name="userName">
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">password:</label>
+                            <label for="recipient-name" class="col-form-label">密码:</label>
                             <input type="password" class="form-control" name="password">
                         </div>
                         <div class="alert alert-danger" name="errorMessage" style="display:none" role="alert">
@@ -182,8 +204,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="loginSubmit">submit</button>
+                    <button type="button" class="btn btn-primary" id="loginSubmit">登录</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -202,15 +224,15 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">userName:</label>
+                            <label for="recipient-name" class="col-form-label">用户名:</label>
                             <input type="text" class="form-control" name="userName">
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">password:</label>
+                            <label for="recipient-name" class="col-form-label">密码:</label>
                             <input type="password" class="form-control" name="password">
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">repetition:</label>
+                            <label for="recipient-name" class="col-form-label">重复密码:</label>
                             <input type="password" class="form-control" name="repetition">
                         </div>
                         <div class="alert alert-danger" style="display:none" name="errorMessage" role="alert">
@@ -218,8 +240,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="registerSubmit">submit</button>
+                    <button type="button" class="btn btn-primary" id="registerSubmit">注册</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>

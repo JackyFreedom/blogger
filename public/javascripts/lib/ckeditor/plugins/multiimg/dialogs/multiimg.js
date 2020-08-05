@@ -1,7 +1,7 @@
 (function() {
     CKEDITOR.dialog.add("multiimg",
         function(a) {
-            var src = "/common/javascripts/lib/ckeditor/plugins/multiimg/iframehtml/iframe_html.html";
+            var src = "/common/public/javascripts/lib/ckeditor/plugins/multiimg/iframehtml/iframe_html.html";
             return {
                 title: "批量上传图片",
                 minWidth: "660px",

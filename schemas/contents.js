@@ -21,6 +21,11 @@ module.exports = new mongoose.Schema({
       type:Number,
       default:0
     },
+     //图片路径
+     imgPath:{
+        type:String,
+        default:''
+      },
     //简介
     description:{
         type:String,
