@@ -9,8 +9,8 @@ var debug = require('debug')('blogger:server');
 var http = require('http');
 var mongoose = require('mongoose');
 var nodeHost = require('../ipConfig');
- 
-var socket = require('../sokets');
+debug('start')
+// var socket = require('../sokets');
 
 /**
  * Get port from environment and store in Express.
@@ -24,7 +24,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-socket.listen(server);
+// socket.listen(server);
 // io.set('log level', 1);//将socket.io中的debug信息关闭  
  
 
@@ -35,7 +35,7 @@ socket.listen(server);
 //数据库连接成后启动 app
 mongoose.connect('mongodb://localhost:27017/blog',{useNewUrlParser: true},function (err) {
    if(err){
-     console.log('数据库连接失败');
+     console.log('mongodb connection error');
    }else{
     server.listen(port);
    }
