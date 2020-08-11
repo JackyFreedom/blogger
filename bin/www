@@ -35,7 +35,7 @@ var server = http.createServer(app);
 //数据库连接成后启动 app
 mongoose.connect('mongodb://localhost:27017/blog',{useNewUrlParser: true},function (err) {
    if(err){
-     console.log('mongodb connection error');
+     console.log('mongodb connection error',err);
    }else{
     server.listen(port);
    }
