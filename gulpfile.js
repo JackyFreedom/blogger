@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync') ;
 var nodemon = require('gulp-nodemon');
-var nodeHost = require('./ipConfig');
 var reload = browserSync.reload;
 var files = [ 
     './*.js',
@@ -28,7 +27,7 @@ gulp.task('node',function( ){
     });
     //浏览器刷新
     browserSync.init({
-        proxy:nodeHost.ip+":"+nodeHost.port,
+        // proxy:nodeHost.ip+":"+nodeHost.port,
         files: files,
         browser:'chrome',
         notify:false,

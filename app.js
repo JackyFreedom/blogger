@@ -7,7 +7,6 @@ var logger = require('morgan');
 var artTemplate = require('art-template');
 var express_art_template = require('express-art-template');
 var Cookies = require('cookies');
-var nodeHost = require('./ipConfig').nodeservers;
 var  templateMethodExtends =require('./public/javascripts/templateMethodExtends.js')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -51,7 +50,6 @@ app.use(function (req,res,next) {
 })
 
 
-app.locals.nodeHost =nodeHost;
 app.use('/', indexRouter);
 app.use('/users', usersRouter); 
 app.use('/update', updateRouter); 

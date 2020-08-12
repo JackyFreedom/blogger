@@ -7,15 +7,13 @@ define(['jquery', 'bootstrap','aes','colpick'], function ($, strap,aes) {
     // console.log('--'+aes.encryptByAES('aaaaaaa')+'--')
     console.log('aes',aes.unEncryptByAES('s7s/ST9h/nbhB5EP4kSC3g=='))
     
-    var nodeHost = $('#nodeHost').val() || '';
-    console.log('node--', nodeHost)
     //注册
     var $register = $('#register');
     $register.find('#registerSubmit').on('click', function () {
         // console.log('ajax', nodeHost)
         $.ajax({
             type: 'post',
-            url: nodeHost + '/users/register',
+            url: '/users/register',
             data: {
                 userName: $.trim($register.find('input[name=userName]').val()) ||
                     '',
@@ -53,7 +51,7 @@ define(['jquery', 'bootstrap','aes','colpick'], function ($, strap,aes) {
     $login.find('#loginSubmit').on('click', function () {
         $.ajax({
             type: 'post',
-            url: nodeHost + '/users/login',
+            url: '/users/login',
             data: {
                 userName: $.trim($login.find('input[name=userName]').val()) || '',
                 password:aes.encryptByAES($.trim($login.find('input[name=password]').val() || '')) 
